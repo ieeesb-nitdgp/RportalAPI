@@ -1,10 +1,3 @@
-# Archived 
-
-### Code now lives inside IEEE Repository - <br>
-### https://github.com/ieeesb-nitdgp/Research-Portal-Backend.git
-
-
-
 -----------------------------------------
 
 <!-- PROJECT SHIELDS -->
