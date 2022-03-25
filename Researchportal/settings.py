@@ -1,37 +1,24 @@
 from pathlib import Path
-import os
-import environ
 from datetime import timedelta
-import cloudinary
-import cloudinary_storage
-
-
-import dj_database_url
+import json
 import os
-import django_heroku
-import psycopg2
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+params = json.load(open(os.path.join(BASE_DIR, 'Researchportal/config.json'), 'r'))
 
 
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = params["SECRET_KEY"]
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = False
+DEBUG = True
 
 UPLOADED_FILES_USE_URL = True
 
-ALLOWED_HOSTS = ['herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
 CORS_ALLOW_ALL_ORIGINS = True
-
-# need to be modified later
-# CORS_ALLOWED_ORIGINS = [
-#     "http://ieeerp.netlify.app/",
-#     "http://localhost:3000",
-#     "http://127.0.0.1:3000",
-
-# ]
-
 
 
 # Application definition
@@ -55,11 +42,6 @@ INSTALLED_APPS = [
 
     # image field
     'imagekit',
-
-    #clouditionary
-    'cloudinary',
-    'cloudinary_storage',
-
 ]
 
 MIDDLEWARE = [
@@ -75,22 +57,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'Researchportal.urls'
-
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ['CLOUD_NAME'],
-    'API_KEY': os.environ['API_KEY'],
-    'API_SECRET': os.environ['API_SECRET'],
-}
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-
-
-#  SSL Setttings
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
-
-
 
 TEMPLATES = [
     {
@@ -126,6 +92,8 @@ REST_FRAMEWORK = {
     },
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
+
+# REST_FRAMEWORK = { 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' }
 
 
 # JWT SETTINGS
@@ -163,17 +131,13 @@ WSGI_APPLICATION = 'Researchportal.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-DATABASE_URL = os.environ['DATABASE_URL']
 
-conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-DATABASES = {}
-
-DATABASES['default'] = dj_database_url.config(
-    conn_max_age=600, ssl_require=True)
-
-
-
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 
 # Password validation
@@ -240,10 +204,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
-EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
-
-
-
-
-django_heroku.settings(locals())
+EMAIL_HOST_USER = params["EMAIL_HOST_USER"]
+EMAIL_HOST_PASSWORD = params["EMAIL_HOST_PASSWORD"]
