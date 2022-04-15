@@ -129,7 +129,7 @@ class ThreadedMailing(threading.Thread):
 def sendVerificationEmail(domain, user, *args, **kwargs):
     if domain is None or user is None:
         raise ValidationError('Domain/User instance not provided')
-    mail_subject = 'Activate your IEEE Research Portal account.'
+    mail_subject = 'Research Portal E-mail Verification'
     message = render_to_string('usr_val/acc_active_email.html', {
         'first_name': user.first_name,
         'domain': domain,
@@ -137,14 +137,15 @@ def sendVerificationEmail(domain, user, *args, **kwargs):
         'token': account_activation_token.make_token(user),
     })
     to_email = user.email
+    # to_email = 'geyahir206@hhmel.com'
     mail = EmailMessage(
         mail_subject,
         message,
         to=[to_email, ]
     )
-
+    # print(message)
     # UNCOMMENT BELOW LINES TO SEND EMAIL
-    # threaded_mail = ThreadedMailing(mail)
-    # threaded_mail.start()
+    threaded_mail = ThreadedMailing(mail)
+    threaded_mail.start()
 
     return message
