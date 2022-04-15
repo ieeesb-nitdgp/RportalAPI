@@ -29,9 +29,9 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        return HttpResponse('Account activated!')
+        return redirect(to='http://research-portal.ieeesbnitdgp.com/')
     else:
-        return HttpResponse('Activation link is invalid!')
+        return HttpResponse('<h1>Activation link is invalid!</h1>')
 
 
 # teacher 
