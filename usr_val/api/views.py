@@ -59,7 +59,6 @@ class RegistrationView(CreateAPIView):
         else:
             profile = Teacher(user=user)
         profile.save()
-        # print(msg)
 
 
 class StudentRegistrationView(CreateAPIView):
@@ -236,5 +235,3 @@ class RetrieveUpdateRSView(BaseRetrieveUpdateView):
         if not user == obj.student.user:
             raise ValidationError("Can not change someone else's Research Statement")
         return True
-
-
