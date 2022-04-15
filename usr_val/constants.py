@@ -3,7 +3,7 @@ DEPARTMENTS = [
     ('BT', 'BT'),
     ('CE', 'CE'),
     ('CH', 'CH'),
-    ('CS', 'CH'),
+    ('CS', 'CS'),
     ('CY', 'CY'),
     ('EC', 'EC'),
     ('EE', 'EE'),
